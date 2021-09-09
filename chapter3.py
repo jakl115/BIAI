@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+# RESIZE
+
 img = cv2.imread("Resources/Kofuku.jpg")
 print(img.shape)
 
