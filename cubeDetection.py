@@ -7,7 +7,7 @@ cam.set(3, 640)
 cam.set(4, 480)
 cam.set(10, -10)
 
-while True :
+while True:
     success, img = cam.read(0)
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
