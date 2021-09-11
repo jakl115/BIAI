@@ -1,15 +1,8 @@
 from icrawler.builtin import BingImageCrawler
 
-cubes = ['rubiks cube']
-cubesNo = 500
+cubes = ['2x2 cube', '3x3 cube', '4x4 cube']
+cubesNo = 400
 
 for c in cubes:
-    bingCrawler = BingImageCrawler(storage={'root_dir': f'dataset/p'})
+    bingCrawler = BingImageCrawler(storage={'root_dir': f'tst/{c}'})
     bingCrawler.crawl(keyword=c, filters=None, max_num=cubesNo, offset=0)
-
-notCubes = ['random stuff']
-notCubesNo = 500
-
-for c in notCubes:
-    bingCrawler = BingImageCrawler(storage={'root_dir': f'dataset/n'})
-    bingCrawler.crawl(keyword=c, filters=None, max_num=notCubesNo, offset=0)

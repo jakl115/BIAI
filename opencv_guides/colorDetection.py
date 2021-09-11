@@ -1,11 +1,9 @@
 import cv2
 import numpy as np
 
-path = "Resources/Kofuku.jpg"
-
-
 def empty(a):
     pass
+
 
 trackbarName = "Trackbars"
 cv2.namedWindow(trackbarName)
@@ -17,10 +15,8 @@ cv2.createTrackbar("Sat max", trackbarName, 161, 255, empty)
 cv2.createTrackbar("Val min", trackbarName, 216, 255, empty)
 cv2.createTrackbar("Val max", trackbarName, 255, 255, empty)
 
-
-
-while  True:
-    img = cv2.imread(path)
+while True:
+    img = cv2.imread("C:/Users/janni/Desktop/ml/BIAI/Resources/Kofuku.jpg")
 
     imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h_min = cv2.getTrackbarPos("Hue min", trackbarName)

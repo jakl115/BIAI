@@ -3,7 +3,7 @@ import cv2
 faceCascade = cv2.CascadeClassifier("Resources/haarcascade_frontalface_default.xml")
 
 # img = cv2.imread("Resources/Kofuku.jpg")
-img = cv2.imread("../Resources/face.jpg")
+img = cv2.imread("../Resources/Kofuku.jpg")
 imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 faces = faceCascade.detectMultiScale(imgGray, 1.1, 4)

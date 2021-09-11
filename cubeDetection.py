@@ -1,5 +1,7 @@
 import cv2
 
+# real time Rubik's cube detection with trained cascade based on opencv
+
 cubeCascade = cv2.CascadeClassifier("Resources/cascade.xml")
 
 cam = cv2.VideoCapture(0)
@@ -20,5 +22,3 @@ while True:
     cv2.imshow("Result", img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-
