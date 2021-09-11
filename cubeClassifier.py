@@ -65,6 +65,7 @@ AUTOTUNE = tf.data.AUTOTUNE
 train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
+# expanding model by generating randomly rotated and scaled images
 data_augmentation = keras.Sequential(
     [
         layers.experimental.preprocessing.RandomFlip("horizontal",
@@ -99,11 +100,12 @@ model.compile(optimizer='adam',
 
 model.summary()
 
+# training model
 train = True
 if train:
     epochs = 50
     callbacks = [
-        keras.callbacks.ModelCheckpoint("model/{epoch}.h5"),
+        keras.callbacks.ModelCheckpoint("model/trainedModel.h5", verbose=1, save_best_only=True),
     ]
     history = model.fit(
         train_ds,
@@ -135,20 +137,25 @@ if train:
     plt.title('Training and Validation Loss')
     plt.show()
 
-#assumptions
-testedImage = "Resources/3x3.jpg"
-img = keras.preprocessing.image.load_img(
-    testedImage, target_size=(img_height, img_width)
-)
-img_array = keras.preprocessing.image.img_to_array(img)
-img_array = tf.expand_dims(img_array, 0) # Create a batch
 
-predictions = model.predict(img_array)
-score = tf.nn.softmax(predictions[0])
+for test in os.listdir("Resources/testData"):
 
-print(
-    "This image most likely belongs to {} with a {:.2f} percent confidence."
-    .format(class_names[np.argmax(score)], 100 * np.max(score))
-)
+    # testing
+    testedImage = "Resources/" + test #"Resources/2x2.jpg"
+    img = keras.preprocessing.image.load_img(
+        testedImage, target_size=(img_height, img_width)
+    )
+    img_array = keras.preprocessing.image.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0) # Create a batch
 
-print(score)
+    predictions = model.predict(img_array)
+    score = tf.nn.softmax(predictions[0])
+
+    # printing results
+    print(
+        "\nImage {} classified as {} with a {:.2f}% confidence."
+        .format(testedImage, class_names[np.argmax(score)], 100 * np.max(score)))
+    print("All classifications : ")
+    for index in range(class_no):
+        print("\t As {} with {:.2f}% confidence"
+              .format(class_names[index], 100 * score[index]))
