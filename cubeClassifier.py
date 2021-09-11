@@ -8,12 +8,12 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-dataPath = "C:/Users/janni/Desktop/best"
+dataPath = "C:/Users/janni/Desktop/ml/best"
 
 # delete corrupted files
 num_skipped = 0
 for folder_name in ("2x2", "3x3", "4x4"):
-    folder_path = os.path.join("C:/Users/janni/Desktop/best", folder_name)
+    folder_path = os.path.join(dataPath, folder_name)
     for fname in os.listdir(folder_path):
         fpath = os.path.join(folder_path, fname)
         try:
@@ -29,9 +29,9 @@ for folder_name in ("2x2", "3x3", "4x4"):
 print("Deleted %d images" % num_skipped)
 
 # parameters
-batch_size = 32
-img_height = 180
-img_width = 180
+batch_size = 16
+img_height = 224
+img_width = 224
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     dataPath,
@@ -101,9 +101,9 @@ model.compile(optimizer='adam',
 model.summary()
 
 # training model
-train = True
+train = False
 if train:
-    epochs = 50
+    epochs = 30
     callbacks = [
         keras.callbacks.ModelCheckpoint("model/trainedModel.h5", verbose=1, save_best_only=True),
     ]
@@ -137,16 +137,15 @@ if train:
     plt.title('Training and Validation Loss')
     plt.show()
 
-
 for test in os.listdir("Resources/testData"):
 
     # testing
-    testedImage = "Resources/" + test #"Resources/2x2.jpg"
+    testedImage = "Resources/testData/" + test
     img = keras.preprocessing.image.load_img(
         testedImage, target_size=(img_height, img_width)
     )
     img_array = keras.preprocessing.image.img_to_array(img)
-    img_array = tf.expand_dims(img_array, 0) # Create a batch
+    img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
@@ -154,7 +153,7 @@ for test in os.listdir("Resources/testData"):
     # printing results
     print(
         "\nImage {} classified as {} with a {:.2f}% confidence."
-        .format(testedImage, class_names[np.argmax(score)], 100 * np.max(score)))
+            .format(testedImage, class_names[np.argmax(score)], 100 * np.max(score)))
     print("All classifications : ")
     for index in range(class_no):
         print("\t As {} with {:.2f}% confidence"
