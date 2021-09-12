@@ -29,9 +29,10 @@ for folder_name in ("2x2", "3x3", "4x4"):
 print("Deleted %d images" % num_skipped)
 
 # parameters
-batch_size = 16
+batch_size = 32
 img_height = 224
 img_width = 224
+lr = 1e-4
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     dataPath,
@@ -103,7 +104,7 @@ model.summary()
 # training model
 train = True
 if train:
-    epochs = 30
+    epochs = 40
     callbacks = [
         keras.callbacks.ModelCheckpoint("model/trainedModel.h5", verbose=1, save_best_only=True),
     ]
@@ -113,6 +114,8 @@ if train:
         epochs=epochs,
         callbacks=callbacks
     )
+
+    model.save('model/backup')
 
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
@@ -147,7 +150,7 @@ for test in os.listdir("Resources/testData"):
     img_array = keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
-    predictions = model.predict(img_array)
+    predictions = model.predict(x=img_array, batch_size=batch_size, callbacks="model/trainedModel.h5")
     score = tf.nn.softmax(predictions[0])
 
     # printing results
