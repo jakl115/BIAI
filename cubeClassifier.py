@@ -101,7 +101,7 @@ model.compile(optimizer='adam',
 model.summary()
 
 # training model
-train = False
+train = True
 if train:
     epochs = 30
     callbacks = [
