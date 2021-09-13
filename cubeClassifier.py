@@ -104,7 +104,7 @@ model.summary()
 # training model
 train = True
 if train:
-    epochs = 40
+    epochs = 5
     callbacks = [
         keras.callbacks.ModelCheckpoint("model/trainedModel.h5", verbose=1, save_best_only=True),
     ]
@@ -150,7 +150,7 @@ for test in os.listdir("Resources/testData"):
     img_array = keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
-    predictions = model.predict(x=img_array, batch_size=batch_size, callbacks="model/trainedModel.h5")
+    predictions = model.predict(x=img_array, batch_size=batch_size, callbacks=callbacks)
     score = tf.nn.softmax(predictions[0])
 
     # printing results
